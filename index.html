@@ -1,0 +1,977 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Invito Festa Laurea</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+```
+    body {
+        font-family: 'Courier New', monospace;
+        background: #000;
+        color: white;
+        min-height: 100vh;
+        padding: 10px;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('https://www.dropbox.com/scl/fi/si68o0f4e8pqk25n6g0yw/Foto-06-10-25-23-21-59.gif?rlkey=beahgzwltmbuhmnmkmr3phdjt&raw=1');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0.4;
+        z-index: -1;
+    }
+
+    body::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(0,17,34,0.7), rgba(0,51,102,0.7));
+        z-index: -1;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+    
+    .title {
+        text-align: center;
+        font-size: 24px;
+        color: white;
+        margin: 20px 0;
+        text-shadow: 2px 2px 4px black, 0 0 10px rgba(255,215,0,0.5);
+        position: relative;
+        z-index: 50;
+    }
+    
+    .subtitle {
+        text-align: center;
+        font-size: 16px;
+        margin: 15px 0;
+        line-height: 1.5;
+        position: relative;
+        z-index: 50;
+        color: white;
+    }
+    
+    input {
+        width: 100%;
+        max-width: 350px;
+        padding: 12px;
+        margin: 10px 0;
+        background: rgba(0,0,0,0.5);
+        border: 2px solid gold;
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+        position: relative;
+        z-index: 100;
+    }
+    
+    button {
+        background: linear-gradient(45deg, #FFD700, #FFA500);
+        border: none;
+        padding: 15px 25px;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 8px;
+        font-size: 14px;
+        transition: transform 0.2s;
+        position: relative;
+        z-index: 100;
+    }
+    
+    button:hover:not(:disabled) {
+        transform: scale(1.05);
+    }
+    
+    button:disabled {
+        background: #666;
+        opacity: 0.5;
+    }
+    
+    .center { text-align: center; }
+    
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid rgba(255, 215, 0, 0.3);
+        border-top: 4px solid gold;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .loading-bar {
+        width: 80%;
+        max-width: 400px;
+        height: 30px;
+        background: rgba(0, 0, 0, 0.8);
+        border: 3px solid gold;
+        border-radius: 15px;
+        margin: 20px auto;
+        overflow: hidden;
+    }
+    
+    .loading-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
+        width: 0%;
+        transition: width 0.3s;
+    }
+
+    .floating-text {
+        position: fixed;
+        font-size: 11px;
+        color: white;
+        pointer-events: none;
+        animation: float 15s ease-in-out infinite;
+        opacity: 0;
+        transition: opacity 3s ease-in-out;
+        text-shadow: -2px -2px 3px #000, 2px -2px 3px #000, -2px 2px 3px #000, 2px 2px 3px #000, 0 0 5px #000;
+        z-index: 1;
+    }
+    
+    @keyframes float {
+        0% { opacity: 0; transform: translateY(0); }
+        20% { opacity: 0.8; }
+        50% { transform: translateY(-20px); }
+        80% { opacity: 0.8; }
+        100% { opacity: 0; }
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+
+    .battle-area {
+        background: linear-gradient(180deg, #87CEEB 0%, #98FB98 100%);
+        border: 2px solid #8B4513;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    .boss {
+        text-align: center;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .boss-sprite {
+        font-size: 70px;
+        animation: bossFloat 2s ease-in-out infinite;
+        display: inline-block;
+        order: 2;
+    }
+    
+    .boss-sprite.shake {
+        animation: bossShake 0.5s, bossFloat 2s ease-in-out infinite;
+    }
+    
+    @keyframes bossFloat {
+        from { transform: translateY(0); }
+        to { transform: translateY(-10px); }
+    }
+    
+    @keyframes bossShake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+    }
+    
+    .boss-name {
+        font-size: 16px;
+        color: white;
+        font-weight: bold;
+        background: rgba(0,0,0,0.8);
+        padding: 6px 12px;
+        border-radius: 5px;
+        display: inline-block;
+        margin: 10px 0;
+        order: 1;
+        text-shadow: 0 0 10px gold;
+    }
+    
+    .hp-bar {
+        width: 100%;
+        max-width: 300px;
+        height: 16px;
+        background: #333;
+        border: 3px solid white;
+        border-radius: 8px;
+        margin: 10px auto;
+        overflow: hidden;
+        order: 3;
+    }
+    
+    .hp-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00);
+        transition: width 0.8s ease-out;
+        width: 100%;
+    }
+    
+    .party {
+        display: flex;
+        gap: 8px;
+        margin: 15px 0;
+        flex-wrap: wrap;
+    }
+    
+    .member {
+        flex: 1;
+        min-width: 100px;
+        background: rgba(0,0,0,0.8);
+        border: 2px solid gold;
+        border-radius: 8px;
+        padding: 8px;
+        font-size: 10px;
+        transition: transform 0.3s;
+    }
+    
+    .member.hit {
+        animation: memberHit 0.5s;
+    }
+    
+    @keyframes memberHit {
+        0%, 100% { transform: translateX(0); background: rgba(0,0,0,0.8); }
+        50% { transform: translateX(-5px); background: rgba(255,0,0,0.3); }
+    }
+    
+    .member-top {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 5px;
+    }
+    
+    .member-icon {
+        font-size: 20px;
+    }
+    
+    .member-name {
+        font-weight: bold;
+        font-size: 11px;
+        color: white;
+    }
+    
+    .member-hp {
+        height: 6px;
+        background: #333;
+        border-radius: 3px;
+        overflow: hidden;
+        margin: 5px 0;
+    }
+    
+    .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin: 15px 0;
+    }
+    
+    .action-btn {
+        background: rgba(0,100,0,0.9);
+        border: 2px solid #00ff00;
+        color: white;
+        padding: 12px 8px;
+        border-radius: 5px;
+        font-size: 12px;
+        margin: 0;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .action-btn:hover:not(:disabled) {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px rgba(0,255,0,0.5);
+    }
+    
+    .message {
+        background: rgba(0,0,0,0.8);
+        border: 2px solid gold;
+        padding: 15px;
+        border-radius: 8px;
+        min-height: 80px;
+        font-size: 13px;
+        line-height: 1.5;
+        margin: 15px 0;
+        color: white;
+    }
+    
+    .invite {
+        background: rgba(0,0,0,0.8);
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px solid gold;
+        line-height: 1.8;
+        font-size: 14px;
+        color: white;
+    }
+    
+    .damage {
+        position: fixed;
+        font-size: 24px;
+        font-weight: bold;
+        pointer-events: none;
+        animation: dmg 1.5s forwards;
+        z-index: 1000;
+        text-shadow: 2px 2px 4px black;
+    }
+    
+    @keyframes dmg {
+        0% { opacity: 1; transform: translateY(0) scale(1); }
+        50% { transform: translateY(-15px) scale(1.2); }
+        100% { opacity: 0; transform: translateY(-30px); }
+    }
+</style>
+```
+
+</head>
+<body>
+    <!-- LOADING -->
+    <div class="screen active" id="loading">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;">
+            <div class="title" style="font-size: 28px; margin-bottom: 30px;">🎓 INVITO FESTA LAUREA</div>
+            <div class="loading-spinner"></div>
+            <div class="loading-bar">
+                <div class="loading-bar-fill" id="loadBar"></div>
+            </div>
+            <div style="color: gold; font-size: 16px; margin: 20px 0;" id="loadStatus">Caricamento...</div>
+            <div style="font-size: 14px;" id="loadProgress">0%</div>
+        </div>
+    </div>
+
+```
+<!-- PRESS START -->
+<div class="screen" id="pressStart">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;">
+        <div class="title" style="font-size: 32px; margin-bottom: 40px; animation: pulse 2s infinite;">
+            🎓 INVITO FESTA LAUREA 🎓
+        </div>
+        <div style="font-size: 18px; animation: blink 1.5s infinite; cursor: pointer;" onclick="inizia()">
+            ▶️ PREMI PER INIZIARE
+        </div>
+    </div>
+</div>
+
+<!-- MENU -->
+<div class="screen" id="menu">
+    <div id="stats"></div>
+    <div class="title" style="margin-top: 80px;">⚔️ ESAME FINALE ⚔️</div>
+    <div class="subtitle">
+        L'Università Pegaso ti sfida!<br>
+        Conquista la laurea!
+    </div>
+    <div class="center">
+        <input type="text" id="nome" placeholder="Il tuo nome" maxlength="20">
+        <br>
+        <button onclick="avviaBattaglia()">⚔️ INIZIA BATTAGLIA</button>
+        <br>
+        <button onclick="toggleMusica()" id="btnMusica">🎵 Musica OFF</button>
+    </div>
+</div>
+
+<!-- INTRO BATTAGLIA -->
+<div class="screen" id="intro">
+    <div class="title">⚔️ BATTAGLIA FINALE</div>
+    <div class="subtitle">Sconfiggi l'Università Pegaso per conquistare la laurea!</div>
+    <div class="center" style="margin-top: 40px;">
+        <button onclick="startBattle()">▶️ INIZIA BATTAGLIA</button>
+    </div>
+</div>
+
+<!-- BATTAGLIA -->
+<div class="screen" id="battle">
+    <div class="title">⚔️ BATTAGLIA FINALE</div>
+    
+    <div class="battle-area">
+        <div class="boss">
+            <div class="boss-name">UNIVERSITÀ PEGASO</div>
+            <div class="boss-sprite">🦄</div>
+            <div class="hp-bar">
+                <div class="hp-fill" id="bossHP"></div>
+            </div>
+        </div>
+        
+        <div class="party">
+            <div class="member">
+                <div class="member-top">
+                    <span class="member-icon">🎓</span>
+                    <span class="member-name" id="p1name">Tu</span>
+                </div>
+                <div class="member-hp">
+                    <div class="hp-fill" id="p1hp"></div>
+                </div>
+                <div style="color: #ffff00;">HP <span id="p1text">150</span></div>
+            </div>
+            
+            <div class="member">
+                <div class="member-top">
+                    <span class="member-icon">👨</span>
+                    <span class="member-name">Paolo</span>
+                </div>
+                <div class="member-hp">
+                    <div class="hp-fill" id="p2hp"></div>
+                </div>
+                <div style="color: #ffff00;">HP <span id="p2text">120</span></div>
+            </div>
+            
+            <div class="member">
+                <div class="member-top">
+                    <span class="member-icon">👩</span>
+                    <span class="member-name">Federica</span>
+                </div>
+                <div class="member-hp">
+                    <div class="hp-fill" id="p3hp"></div>
+                </div>
+                <div style="color: #ffff00;">HP <span id="p3text">140</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="actions">
+        <button class="action-btn" onclick="attacca(0)">📖 Studio</button>
+        <button class="action-btn" onclick="attacca(1)">📝 Dispense</button>
+        <button class="action-btn" onclick="attacca(2)">💻 Project</button>
+        <button class="action-btn" onclick="attacca(3)">🎯 Esame</button>
+        <button class="action-btn" onclick="cura()">💚 Cura (<span id="pot">5</span>)</button>
+    </div>
+    
+    <div class="message" id="msg">Scegli la tua azione!</div>
+</div>
+
+<!-- VITTORIA -->
+<div class="screen" id="vittoria">
+    <div class="title">🎉 LAUREA CONSEGUITA! 🎉</div>
+    <div class="center" style="margin: 20px;">
+        <div style="font-size: 18px; color: gold; line-height: 1.6;" id="vincitore">COMPLIMENTI!</div>
+    </div>
+    
+    <div class="invite">
+        <strong style="color: gold; font-size: 16px;">🎓 FESTA DI LAUREA</strong><br><br>
+        <strong>Laureato:</strong> PAOLO - 110 e Lode<br>
+        <strong>Tesi:</strong> "ITA Airways e la gestione digitale"<br><br>
+        <strong>📅 Data:</strong> Sabato 15 Novembre 2025<br>
+        <strong>⏰ Ora:</strong> 19:00<br>
+        <strong>📍 Luogo:</strong> "Aula Magna del Divertimento"<br>
+        Via del Successo 110, Milano<br><br>
+        <strong>📱 RSVP:</strong><br>
+        📞 WhatsApp: +39 123 456 7890<br>
+        📧 Email: festa@laurea-paolo.it<br><br>
+        <strong>⚠️ Scadenza:</strong> 10 Novembre 2025
+    </div>
+    
+    <div class="center" style="margin: 20px;">
+        <em style="color: #FFA500;">È gradita conferma</em>
+    </div>
+    
+    <div class="center">
+        <button onclick="ricomincia()">🔄 NUOVA PARTITA</button>
+    </div>
+</div>
+
+<!-- GAME OVER -->
+<div class="screen" id="gameover">
+    <div class="title" style="color: red; font-size: 28px; margin: 40px 0;">💀 GAME OVER 💀</div>
+    <div class="center" style="margin: 30px 20px;">
+        <div style="font-size: 18px; color: #ff6b6b; margin: 20px 0;">PROJECT WORK NON ACCETTATO</div>
+        <div style="font-size: 14px; margin: 20px 0; line-height: 1.6;">
+            L'Università Pegaso ha vinto questa volta...<br>
+            Ma un vero studente non si arrende mai!<br><br>
+            💪 Riprova la battaglia!
+        </div>
+    </div>
+    <div class="center">
+        <button onclick="ritenta()">📚 RIPROVA BATTAGLIA</button>
+        <button onclick="ricomincia()">🏠 TORNA AL MENU</button>
+    </div>
+</div>
+
+<script>
+    var stats = [
+        "📚 Esami Sostenuti: 19/20", "⭐ Media: 28.65/30",
+        "📝 Tesi: ITA Airways", "🎯 CFU: 177/180",
+        "💧 Lacrime Versate: 1357", "📖 Ore di Studio: 2847",
+        "☕ Caffè Bevuti: 347", "⏰ Ore di Sonno Perse: 234",
+        "🌙 Notti Insonni: 89", "📱 Chiamate Segreteria: 156",
+        "🚬 Sigarette Fumate: 710", "🎮 Pause Gaming: 156"
+    ];
+    
+    var pos = [
+        {top:'5%',left:'5%'},{top:'8%',right:'8%'},{top:'18%',left:'15%'},
+        {top:'28%',right:'12%'},{top:'38%',left:'8%'},{top:'48%',right:'18%'},
+        {top:'58%',left:'12%'},{top:'68%',right:'15%'},{top:'78%',left:'18%'},
+        {top:'88%',right:'8%'},{top:'15%',left:'50%'},{top:'45%',right:'45%'}
+    ];
+    
+    var g = {
+        nome: '',
+        giocatori: [{hp:150,max:150},{hp:120,max:120},{hp:140,max:140}],
+        bossHP: 400,
+        bossMax: 400,
+        pozioni: 5,
+        attivo: false
+    };
+    
+    var musica = null;
+    var musicaBattaglia = null;
+    var musicaAttiva = false;
+    var audioCtx = null;
+    
+    var attacchi = [
+        {dmg:[20,35],msg:"📖 Studio! {d} danni!"},
+        {dmg:[25,40],msg:"📝 Dispense! {d} danni!"},
+        {dmg:[30,45],msg:"💻 Project! {d} danni!"},
+        {dmg:[35,55],msg:"🎯 30eLode! {d} danni!"}
+    ];
+    
+    var bossAttacchi = [
+        {msg:"🦄 ESAME su {t}! {d} danni!",multi:0},
+        {msg:"📋 SESSIONE MALE! {d} a tutti!",multi:1},
+        {msg:"⏰ TESI {t}! {d} danni!",multi:0},
+        {msg:"💥 ESAME SCRITTO su {t}! {d} danni!",multi:0},
+        {msg:"📊 VALUTAZIONE NEGATIVA! {d} a tutti!",multi:1}
+    ];
+
+    // CARICAMENTO
+    var loadStep = 0;
+    var bgCaricato = false;
+    var steps = [
+        {p:10, t:'Inizializzazione...', d:800},
+        {p:25, t:'Caricamento risorse...', d:1000},
+        {p:40, t:'Background...', d:1500, wait:true},
+        {p:60, t:'Musica...', d:2000},
+        {p:75, t:'Audio...', d:1200},
+        {p:90, t:'Interfaccia...', d:1000},
+        {p:100, t:'Completato!', d:800}
+    ];
+
+    var bg = new Image();
+    bg.onload = function() { bgCaricato = true; };
+    bg.onerror = function() { bgCaricato = true; };
+    bg.src = 'https://www.dropbox.com/scl/fi/si68o0f4e8pqk25n6g0yw/Foto-06-10-25-23-21-59.gif?rlkey=beahgzwltmbuhmnmkmr3phdjt&raw=1';
+
+    musica = new Audio();
+    musica.src = 'https://www.dropbox.com/scl/fi/cznzyrny18yea8npnrzhn/AMONG-US-OST-MAIN-THEME-SONG-HQ.mp3?rlkey=rac4q4h73i5h2666bqznc3eqf&raw=1';
+    musica.loop = true;
+    musica.volume = 0.3;
+
+    musicaBattaglia = new Audio();
+    musicaBattaglia.src = 'https://dl.dropboxusercontent.com/scl/fi/xx1v8mm4ms0kwzajdc2z7/15_10_25_06_09_14.m4a?rlkey=dt32vv97kg74udv8hban0rwfi';
+    musicaBattaglia.loop = true;
+    musicaBattaglia.volume = 0.4;
+
+    function caricaStep() {
+        if (loadStep < steps.length) {
+            var s = steps[loadStep];
+            if (s.wait && !bgCaricato) {
+                setTimeout(caricaStep, 300);
+                return;
+            }
+            document.getElementById('loadBar').style.width = s.p + '%';
+            document.getElementById('loadProgress').textContent = s.p + '%';
+            document.getElementById('loadStatus').textContent = s.t;
+            loadStep++;
+            setTimeout(caricaStep, s.d);
+        } else {
+            setTimeout(function() { mostra('pressStart'); }, 500);
+        }
+    }
+
+    setTimeout(caricaStep, 500);
+
+    function mostra(id) {
+        var schermate = document.querySelectorAll('.screen');
+        for (var i = 0; i < schermate.length; i++) {
+            schermate[i].classList.remove('active');
+        }
+        document.getElementById(id).classList.add('active');
+    }
+
+    function inizia() {
+        musica.play().catch(function(e){});
+        musicaAttiva = true;
+        document.getElementById('btnMusica').textContent = '🔇 Musica ON';
+        
+        initAudio();
+        
+        var c = document.getElementById('stats');
+        for (var i = 0; i < 12; i++) {
+            var d = document.createElement('div');
+            d.className = 'floating-text';
+            var p = pos[i];
+            d.style.top = p.top;
+            if (p.left) d.style.left = p.left;
+            if (p.right) d.style.right = p.right;
+            d.style.animationDelay = (i*1.2)+'s';
+            c.appendChild(d);
+        }
+        aggiornaStats();
+        setInterval(cambiaStats, 5000);
+        mostra('menu');
+    }
+
+    function aggiornaStats() {
+        var els = document.querySelectorAll('.floating-text');
+        var s = stats.slice().sort(function(){return Math.random()-0.5;});
+        for (var i = 0; i < els.length; i++) {
+            els[i].textContent = s[i];
+        }
+    }
+
+    function cambiaStats() {
+        var els = document.querySelectorAll('.floating-text');
+        var r = Math.floor(Math.random()*els.length);
+        if (els[r]) {
+            els[r].style.opacity = '0';
+            setTimeout(function() {
+                els[r].textContent = stats[Math.floor(Math.random()*stats.length)];
+                els[r].style.opacity = '1';
+            }, 1000);
+        }
+    }
+
+    function toggleMusica() {
+        if (musicaAttiva) {
+            musica.pause();
+            musicaAttiva = false;
+            document.getElementById('btnMusica').textContent = '🎵 Musica OFF';
+        } else {
+            musica.play().catch(function(e){});
+            musicaAttiva = true;
+            document.getElementById('btnMusica').textContent = '🔇 Musica ON';
+        }
+    }
+
+    function avviaBattaglia() {
+        g.nome = document.getElementById('nome').value.trim() || 'Studente';
+        if (musicaAttiva) musica.pause();
+        mostra('intro');
+    }
+
+    function startBattle() {
+        document.getElementById('p1name').textContent = g.nome;
+        g.giocatori[0].hp = g.giocatori[0].max;
+        g.giocatori[1].hp = g.giocatori[1].max;
+        g.giocatori[2].hp = g.giocatori[2].max;
+        g.bossHP = g.bossMax;
+        g.attivo = true;
+        g.pozioni = 5;
+        document.getElementById('pot').textContent = g.pozioni;
+        document.getElementById('msg').textContent = 'Scegli la tua azione!';
+        var btns = document.querySelectorAll('.action-btn');
+        for (var i = 0; i < btns.length; i++) btns[i].disabled = false;
+        
+        // Ferma musica menu e avvia musica battaglia
+        if (musica && musicaAttiva) {
+            musica.pause();
+        }
+        
+        if (musicaBattaglia) {
+            musicaBattaglia.currentTime = 0;
+            musicaBattaglia.play().then(function() {
+                console.log('✓ Musica battaglia avviata!');
+            }).catch(function(e) {
+                console.log('✗ Musica battaglia bloccata:', e);
+            });
+        }
+        
+        aggiornaDisplay();
+        mostra('battle');
+    }
+
+    function attacca(tipo) {
+        if (!g.attivo) return;
+        var btns = document.querySelectorAll('.action-btn');
+        for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
+        
+        suono('attack');
+        
+        var sk = attacchi[tipo];
+        var d = Math.floor(Math.random()*(sk.dmg[1]-sk.dmg[0]+1)) + sk.dmg[0];
+        document.getElementById('msg').textContent = sk.msg.replace('{d}', d);
+        mostraDanno(d, 'boss', '#ff0000');
+        
+        var bossSprite = document.querySelector('.boss-sprite');
+        if (bossSprite) {
+            bossSprite.classList.add('shake');
+            setTimeout(function() { bossSprite.classList.remove('shake'); }, 500);
+        }
+        
+        g.bossHP = Math.max(0, g.bossHP - d);
+        aggiornaDisplay();
+        
+        setTimeout(function() {
+            if (g.bossHP <= 0) {
+                vinci();
+            } else {
+                attaccoBoss();
+            }
+        }, 1200);
+    }
+
+    function cura() {
+        if (!g.attivo || g.pozioni <= 0) return;
+        var btns = document.querySelectorAll('.action-btn');
+        for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
+        
+        suono('heal');
+        
+        g.pozioni--;
+        document.getElementById('pot').textContent = g.pozioni;
+        
+        var members = document.querySelectorAll('.member');
+        for (var i = 0; i < g.giocatori.length; i++) {
+            var guar = Math.min(30, g.giocatori[i].max - g.giocatori[i].hp);
+            g.giocatori[i].hp += guar;
+            if (guar > 0) {
+                mostraDanno('+' + guar, 'player' + i, '#00ff00');
+            }
+        }
+        
+        document.getElementById('msg').textContent = '💚 Curati di 30 HP!';
+        aggiornaDisplay();
+        
+        setTimeout(function() { attaccoBoss(); }, 1200);
+    }
+
+    function attaccoBoss() {
+        if (!g.attivo) return;
+        
+        suono('boss');
+        
+        var atk = bossAttacchi[Math.floor(Math.random() * bossAttacchi.length)];
+        var members = document.querySelectorAll('.member');
+        
+        if (atk.multi) {
+            // Attacco multiplo - colpisce tutti i personaggi VIVI
+            var d = Math.floor(Math.random() * 20) + 15;
+            for (var i = 0; i < g.giocatori.length; i++) {
+                if (g.giocatori[i].hp > 0) { // Solo se il personaggio è vivo
+                    g.giocatori[i].hp = Math.max(0, g.giocatori[i].hp - d);
+                    mostraDanno(d, 'player' + i, '#ff6b6b');
+                    if (members[i]) {
+                        members[i].classList.add('hit');
+                        setTimeout(function(idx) {
+                            return function() { members[idx].classList.remove('hit'); };
+                        }(i), 500);
+                    }
+                }
+            }
+            document.getElementById('msg').textContent = atk.msg.replace('{d}', d);
+        } else {
+            // Attacco singolo - sceglie un personaggio VIVO
+            var vivi = [];
+            for (var i = 0; i < g.giocatori.length; i++) {
+                if (g.giocatori[i].hp > 0) {
+                    vivi.push(i);
+                }
+            }
+            
+            if (vivi.length > 0) {
+                var target = vivi[Math.floor(Math.random() * vivi.length)];
+                var d = Math.floor(Math.random() * 25) + 20;
+                g.giocatori[target].hp = Math.max(0, g.giocatori[target].hp - d);
+                mostraDanno(d, 'player' + target, '#ff6b6b');
+                if (members[target]) {
+                    members[target].classList.add('hit');
+                    setTimeout(function() { members[target].classList.remove('hit'); }, 500);
+                }
+                var nomi = [g.nome, 'Paolo', 'Federica'];
+                document.getElementById('msg').textContent = atk.msg.replace('{t}', nomi[target]).replace('{d}', d);
+            }
+        }
+        
+        aggiornaDisplay();
+        
+        setTimeout(function() {
+            var morti = 0;
+            for (var i = 0; i < g.giocatori.length; i++) {
+                if (g.giocatori[i].hp <= 0) morti++;
+            }
+            if (morti >= 3) {
+                perdi();
+            } else {
+                var btns = document.querySelectorAll('.action-btn');
+                for (var i = 0; i < btns.length; i++) btns[i].disabled = false;
+            }
+        }, 1200);
+    }
+
+    function aggiornaDisplay() {
+        document.getElementById('bossHP').style.width = (g.bossHP / g.bossMax * 100) + '%';
+        for (var i = 0; i < g.giocatori.length; i++) {
+            var hp = Math.max(0, g.giocatori[i].hp);
+            document.getElementById('p' + (i+1) + 'hp').style.width = (hp / g.giocatori[i].max * 100) + '%';
+            document.getElementById('p' + (i+1) + 'text').textContent = hp;
+        }
+    }
+
+    function mostraDanno(valore, target, colore) {
+        var el = document.createElement('div');
+        el.className = 'damage';
+        el.textContent = valore;
+        el.style.color = colore;
+        
+        var rect;
+        if (target === 'boss') {
+            rect = document.querySelector('.boss-sprite').getBoundingClientRect();
+        } else {
+            var idx = parseInt(target.replace('player', ''));
+            rect = document.querySelectorAll('.member')[idx].getBoundingClientRect();
+        }
+        
+        el.style.left = (rect.left + rect.width / 2 - 20) + 'px';
+        el.style.top = (rect.top + 10) + 'px';
+        document.body.appendChild(el);
+        
+        setTimeout(function() { el.remove(); }, 1500);
+    }
+
+    function vinci() {
+        g.attivo = false;
+        
+        // Ferma musica battaglia e riavvia musica menu
+        if (musicaBattaglia) {
+            musicaBattaglia.pause();
+            musicaBattaglia.currentTime = 0;
+        }
+        if (musica && musicaAttiva) {
+            musica.play().catch(function(e){});
+        }
+        
+        suono('victory');
+        document.getElementById('vincitore').innerHTML = 
+            '🎉 <strong style="color: gold;">' + g.nome + '</strong> ha sconfitto l\'Università Pegaso!<br><br>' +
+            'Sei ufficialmente <strong>LAUREATO</strong>! 🎓<br><br>' +
+            '✨ Vieni a festeggiare! ✨';
+        mostra('vittoria');
+    }
+
+    function perdi() {
+        g.attivo = false;
+        
+        // Ferma musica battaglia e riavvia musica menu
+        if (musicaBattaglia) {
+            musicaBattaglia.pause();
+            musicaBattaglia.currentTime = 0;
+        }
+        if (musica && musicaAttiva) {
+            musica.play().catch(function(e){});
+        }
+        
+        suono('defeat');
+        mostra('gameover');
+    }
+
+    function ritenta() {
+        startBattle();
+    }
+
+    function ricomincia() {
+        document.getElementById('nome').value = '';
+        musica.play().catch(function(e){});
+        musicaAttiva = true;
+        document.getElementById('btnMusica').textContent = '🔇 Musica ON';
+        mostra('menu');
+    }
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+    
+    function suono(tipo) {
+        initAudio();
+        var osc = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        if (tipo === 'attack') {
+            osc.frequency.value = 440;
+            osc.type = 'square';
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.2);
+        } else if (tipo === 'heal') {
+            [523,659,784].forEach(function(f,i){
+                var o = audioCtx.createOscillator();
+                var g = audioCtx.createGain();
+                o.connect(g);
+                g.connect(audioCtx.destination);
+                o.frequency.value = f;
+                o.type = 'sine';
+                g.gain.setValueAtTime(0.15, audioCtx.currentTime + i*0.1);
+                g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i*0.1 + 0.3);
+                o.start(audioCtx.currentTime + i*0.1);
+                o.stop(audioCtx.currentTime + i*0.1 + 0.3);
+            });
+        } else if (tipo === 'boss') {
+            osc.frequency.value = 200;
+            osc.type = 'sawtooth';
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.3);
+        } else if (tipo === 'victory') {
+            [262,330,392,523].forEach(function(f,i){
+                var o = audioCtx.createOscillator();
+                var g = audioCtx.createGain();
+                o.connect(g);
+                g.connect(audioCtx.destination);
+                o.frequency.value = f;
+                o.type = 'sine';
+                g.gain.setValueAtTime(0.2, audioCtx.currentTime + i*0.15);
+                g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i*0.15 + 0.3);
+                o.start(audioCtx.currentTime + i*0.15);
+                o.stop(audioCtx.currentTime + i*0.15 + 0.3);
+            });
+        } else if (tipo === 'defeat') {
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.5);
+            osc.type = 'sine';
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.5);
+        }
+    }
+</script>
+```
+
+</body>
+</html>
