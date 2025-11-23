@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="it">
 <head>
@@ -438,34 +438,23 @@
             
             <div class="member">
                 <div class="member-top">
-                    <span class="member-icon">👨</span>
+                    <span class="member-icon">🧑🏻‍🦱</span>
                     <span class="member-name">Paolo</span>
                 </div>
                 <div class="member-hp">
                     <div class="hp-fill" id="p2hp"></div>
                 </div>
-                <div style="color: #ffff00;">HP <span id="p2text">120</span></div>
-            </div>
-            
-            <div class="member">
-                <div class="member-top">
-                    <span class="member-icon">👩</span>
-                    <span class="member-name">Federica</span>
-                </div>
-                <div class="member-hp">
-                    <div class="hp-fill" id="p3hp"></div>
-                </div>
-                <div style="color: #ffff00;">HP <span id="p3text">140</span></div>
+                <div style="color: #ffff00;">HP <span id="p2text">140</span></div>
             </div>
         </div>
     </div>
     
     <div class="actions">
         <button class="action-btn" onclick="attacca(0)">📖 Studio</button>
-        <button class="action-btn" onclick="attacca(1)">📝 Dispense</button>
+        <button class="action-btn" onclick="attacca(1)">📝 Panieri</button>
         <button class="action-btn" onclick="attacca(2)">💻 Project</button>
         <button class="action-btn" onclick="attacca(3)">🎯 Esame</button>
-        <button class="action-btn" onclick="cura()">💚 Cura (<span id="pot">5</span>)</button>
+        <button class="action-btn" onclick="cura()">💚 Cura (<span id="pot">4</span>)</button>
     </div>
     
     <div class="message" id="msg">Scegli la tua azione!</div>
@@ -480,19 +469,15 @@
     
     <div class="invite">
         <strong style="color: gold; font-size: 16px;">🎓 FESTA DI LAUREA</strong><br><br>
-        <strong>Laureato:</strong> PAOLO - 110 e Lode<br>
-        <strong>Tesi:</strong> "ITA Airways e la gestione digitale"<br><br>
-        <strong>📅 Data:</strong> Sabato 15 Novembre 2025<br>
-        <strong>⏰ Ora:</strong> 19:00<br>
-        <strong>📍 Luogo:</strong> "Aula Magna del Divertimento"<br>
-        Via del Successo 110, Milano<br><br>
+        <strong>Laureato:</strong> PAOLO<br>
+        <strong>Tesi:</strong> "ITA Airways e la sfida della gestione digitale:<br>
+        progettazione di un sistema informativo su misura"<br><br>
+        <strong>📅 Data:</strong> Lunedì 01 Dicembre 2025<br>
+        <strong>⏰ Ora:</strong> 20:30<br>
+        <strong>📍 Luogo:</strong> "Il Convivio di Hera"<br>
+        Via Capocolonna, 103, Crotone 88900<br><br>
         <strong>📱 RSVP:</strong><br>
-        📞 WhatsApp: +39 123 456 7890<br>
-        📧 Email: festa@laurea-paolo.it<br><br>
-        <strong>⚠️ Scadenza:</strong> 10 Novembre 2025
-    </div>
-    
-    <div class="center" style="margin: 20px;">
+        📞 WhatsApp: +39 320 216 0011<br><br>
         <em style="color: #FFA500;">È gradita conferma</em>
     </div>
     
@@ -525,7 +510,7 @@
         "💧 Lacrime Versate: 1357", "📖 Ore di Studio: 2847",
         "☕ Caffè Bevuti: 347", "⏰ Ore di Sonno Perse: 234",
         "🌙 Notti Insonni: 89", "📱 Chiamate Segreteria: 156",
-        "🚬 Sigarette Fumate: 710", "🎮 Pause Gaming: 156"
+        "🎮 Pause Gaming: 156"
     ];
     
     var pos = [
@@ -537,10 +522,10 @@
     
     var g = {
         nome: '',
-        giocatori: [{hp:150,max:150},{hp:120,max:120},{hp:140,max:140}],
-        bossHP: 400,
-        bossMax: 400,
-        pozioni: 5,
+        giocatori: [{hp:150,max:150},{hp:140,max:140}],
+        bossHP: 350,
+        bossMax: 350,
+        pozioni: 4,
         attivo: false
     };
     
@@ -551,7 +536,7 @@
     
     var attacchi = [
         {dmg:[20,35],msg:"📖 Studio! {d} danni!"},
-        {dmg:[25,40],msg:"📝 Dispense! {d} danni!"},
+        {dmg:[25,40],msg:"📝 Panieri! {d} danni!"},
         {dmg:[30,45],msg:"💻 Project! {d} danni!"},
         {dmg:[35,55],msg:"🎯 30eLode! {d} danni!"}
     ];
@@ -571,7 +556,7 @@
         {p:10, t:'Inizializzazione...', d:800},
         {p:25, t:'Caricamento risorse...', d:1000},
         {p:40, t:'Background...', d:1500, wait:true},
-        {p:60, t:'Musica...', d:2000},
+        {p:60, t:'Musica battaglia...', d:2000},
         {p:75, t:'Audio...', d:1200},
         {p:90, t:'Interfaccia...', d:1000},
         {p:100, t:'Completato!', d:800}
@@ -591,14 +576,28 @@
     musicaBattaglia.src = 'https://dl.dropboxusercontent.com/scl/fi/xx1v8mm4ms0kwzajdc2z7/15_10_25_06_09_14.m4a?rlkey=dt32vv97kg74udv8hban0rwfi';
     musicaBattaglia.loop = true;
     musicaBattaglia.volume = 0.4;
+    musicaBattaglia.preload = 'auto';
+    
+    // Avvia il caricamento in background (non blocca il loading)
+    setTimeout(function() {
+        musicaBattaglia.load();
+        console.log('🎵 Inizio caricamento musica battaglia in background...');
+    }, 2000);
+    
+    musicaBattaglia.addEventListener('canplaythrough', function() {
+        console.log('✓ Musica battaglia pronta!');
+    });
 
     function caricaStep() {
         if (loadStep < steps.length) {
             var s = steps[loadStep];
+            
+            // Aspetta SOLO il background
             if (s.wait && !bgCaricato) {
                 setTimeout(caricaStep, 300);
                 return;
             }
+            
             document.getElementById('loadBar').style.width = s.p + '%';
             document.getElementById('loadProgress').textContent = s.p + '%';
             document.getElementById('loadStatus').textContent = s.t;
@@ -684,10 +683,9 @@
         document.getElementById('p1name').textContent = g.nome;
         g.giocatori[0].hp = g.giocatori[0].max;
         g.giocatori[1].hp = g.giocatori[1].max;
-        g.giocatori[2].hp = g.giocatori[2].max;
         g.bossHP = g.bossMax;
         g.attivo = true;
-        g.pozioni = 5;
+        g.pozioni = 4;
         document.getElementById('pot').textContent = g.pozioni;
         document.getElementById('msg').textContent = 'Scegli la tua azione!';
         var btns = document.querySelectorAll('.action-btn');
@@ -778,7 +776,7 @@
             // Attacco multiplo - colpisce tutti i personaggi VIVI
             var d = Math.floor(Math.random() * 20) + 15;
             for (var i = 0; i < g.giocatori.length; i++) {
-                if (g.giocatori[i].hp > 0) { // Solo se il personaggio è vivo
+                if (g.giocatori[i].hp > 0) {
                     g.giocatori[i].hp = Math.max(0, g.giocatori[i].hp - d);
                     mostraDanno(d, 'player' + i, '#ff6b6b');
                     if (members[i]) {
@@ -808,7 +806,7 @@
                     members[target].classList.add('hit');
                     setTimeout(function() { members[target].classList.remove('hit'); }, 500);
                 }
-                var nomi = [g.nome, 'Paolo', 'Federica'];
+                var nomi = [g.nome, 'Paolo'];
                 document.getElementById('msg').textContent = atk.msg.replace('{t}', nomi[target]).replace('{d}', d);
             }
         }
@@ -820,7 +818,7 @@
             for (var i = 0; i < g.giocatori.length; i++) {
                 if (g.giocatori[i].hp <= 0) morti++;
             }
-            if (morti >= 3) {
+            if (morti >= 2) {
                 perdi();
             } else {
                 var btns = document.querySelectorAll('.action-btn');
@@ -874,7 +872,7 @@
         suono('victory');
         document.getElementById('vincitore').innerHTML = 
             '🎉 <strong style="color: gold;">' + g.nome + '</strong> ha sconfitto l\'Università Pegaso!<br><br>' +
-            'Sei ufficialmente <strong>LAUREATO</strong>! 🎓<br><br>' +
+            'Sei ufficialmente <strong>invitato alla mia festa di laurea</strong>! 🎓<br><br>' +
             '✨ Vieni a festeggiare! ✨';
         mostra('vittoria');
     }
