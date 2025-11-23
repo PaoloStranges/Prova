@@ -339,6 +339,14 @@
         color: white;
     }
     
+    .invite strong {
+        color: white;
+    }
+    
+    .invite em {
+        color: white;
+    }
+    
     .damage {
         position: fixed;
         font-size: 24px;
@@ -406,8 +414,60 @@
 <div class="screen" id="intro">
     <div class="title">⚔️ BATTAGLIA FINALE</div>
     <div class="subtitle">Sconfiggi l'Università Pegaso per conquistare la laurea!</div>
-    <div class="center" style="margin-top: 40px;">
-        <button onclick="startBattle()">▶️ INIZIA BATTAGLIA</button>
+    
+    <div style="background: rgba(0,0,0,0.8); border: 2px solid gold; border-radius: 10px; padding: 20px; margin: 20px auto; max-width: 550px; text-align: left;">
+        <div style="font-size: 16px; font-weight: bold; margin-bottom: 15px; text-align: center; color: gold;">📖 COME SI GIOCA</div>
+        
+        <div style="font-size: 13px; line-height: 1.9; color: white;">
+            <p style="text-align: center; font-style: italic; margin-bottom: 15px; color: #FFD700;">
+                🎮 Per gli amanti dei JRPG sarà una passeggiata!<br>
+                Sistema di combattimento a turni classico stile Final Fantasy/Pokémon
+            </p>
+            
+            <strong style="color: gold;">🎯 OBIETTIVO:</strong><br>
+            Riduci gli HP dell'Università Pegaso da <strong>350 a 0</strong> prima che entrambi i tuoi personaggi vengano sconfitti!<br><br>
+            
+            <strong style="color: gold;">👥 IL TUO PARTY:</strong><br>
+            • <strong>Tu</strong> - 150 HP<br>
+            • <strong>🧑🏻‍🦱 Paolo</strong> - 140 HP<br>
+            Totale party: <strong>290 HP</strong><br><br>
+            
+            <strong style="color: gold;">⚔️ IL TUO TURNO:</strong><br>
+            Scegli un'azione tra le 5 disponibili. Ogni attacco ha danni e precisione diversi:<br>
+            • <strong>📖 Studio</strong> - 20-35 danni | 100% precisione (non sbaglia MAI)<br>
+            • <strong>📝 Panieri</strong> - 25-40 danni | 95% precisione (quasi sempre a segno)<br>
+            • <strong>💻 Project</strong> - 30-45 danni | 85% precisione (può mancare)<br>
+            • <strong>🎯 Esame</strong> - 35-55 danni | 75% precisione (alto rischio!)<br>
+            • <strong>💚 Cura</strong> - +30 HP a TUTTI | 100% precisione (hai solo 4 pozioni)<br>
+            <em style="color: #FFD700;">Più l'attacco è forte, più rischi che manchi il bersaglio!</em><br><br>
+            
+            <strong style="color: gold;">🦄 TURNO DEL BOSS:</strong><br>
+            Dopo ogni tua azione, il boss contrattacca automaticamente:<br>
+            • <strong>Attacco singolo</strong>: 20-45 danni a 1 personaggio CASUALE ancora vivo<br>
+            • <strong>Attacco ad area</strong>: 15-35 danni a TUTTO il party<br>
+            Il boss sceglie CASUALMENTE tra 5 attacchi diversi!<br><br>
+            
+            <strong style="color: gold;">💡 STRATEGIA:</strong><br>
+            • <strong>Studio</strong> non sbaglia MAI - usa quando hai pochi HP o vuoi giocare sicuro<br>
+            • <strong>Panieri</strong> ha 95% precisione - ottimo per giocate affidabili<br>
+            • <strong>Project</strong> è rischioso (85%) ma fa bei danni - buon compromesso<br>
+            • <strong>Esame</strong> fa TANTISSIMI danni (35-55) ma sbaglia 1 volta su 4!<br>
+            • Se l'attacco MANCA, il boss attacca lo stesso - turno sprecato!<br>
+            • Salva le cure per i momenti critici (sotto 50 HP)<br>
+            • Se un personaggio muore, il boss colpirà solo il sopravvissuto<br>
+            • Servono circa 8-12 turni per vincere<br><br>
+            
+            <strong style="color: gold;">💀 CONDIZIONI DI SCONFITTA:</strong><br>
+            Game Over se <strong>ENTRAMBI</strong> i personaggi raggiungono 0 HP!<br>
+            Puoi continuare anche con un solo personaggio vivo.<br><br>
+            
+            <strong style="color: gold;">🏆 VITTORIA:</strong><br>
+            Riduci il boss a 0 HP e riceverai l'invito alla festa!
+        </div>
+    </div>
+    
+    <div class="center" style="margin-top: 30px;">
+        <button onclick="startBattle()">▶️ SONO PRONTO - INIZIA BATTAGLIA!</button>
     </div>
 </div>
 
@@ -450,10 +510,10 @@
     </div>
     
     <div class="actions">
-        <button class="action-btn" onclick="attacca(0)">📖 Studio</button>
-        <button class="action-btn" onclick="attacca(1)">📝 Panieri</button>
-        <button class="action-btn" onclick="attacca(2)">💻 Project</button>
-        <button class="action-btn" onclick="attacca(3)">🎯 Esame</button>
+        <button class="action-btn" onclick="attacca(0)">📖 Studio<br><span style="font-size: 10px;">100% ✓</span></button>
+        <button class="action-btn" onclick="attacca(1)">📝 Panieri<br><span style="font-size: 10px;">95% ✓</span></button>
+        <button class="action-btn" onclick="attacca(2)">💻 Project<br><span style="font-size: 10px;">85% ⚠️</span></button>
+        <button class="action-btn" onclick="attacca(3)">🎯 Esame<br><span style="font-size: 10px;">75% ⚠️</span></button>
         <button class="action-btn" onclick="cura()">💚 Cura (<span id="pot">4</span>)</button>
     </div>
     
@@ -468,17 +528,17 @@
     </div>
     
     <div class="invite">
-        <strong style="color: gold; font-size: 16px;">🎓 FESTA DI LAUREA</strong><br><br>
-        <strong>Laureato:</strong> PAOLO<br>
-        <strong>Tesi:</strong> "ITA Airways e la sfida della gestione digitale:<br>
+        <strong style="color: white; font-size: 16px;">🎓 FESTA DI LAUREA</strong><br><br>
+        <strong style="color: white;">Laureato:</strong> PAOLO<br>
+        <strong style="color: white;">Tesi:</strong> "ITA Airways e la sfida della gestione digitale:<br>
         progettazione di un sistema informativo su misura"<br><br>
-        <strong>📅 Data:</strong> Lunedì 01 Dicembre 2025<br>
-        <strong>⏰ Ora:</strong> 20:30<br>
-        <strong>📍 Luogo:</strong> "Il Convivio di Hera"<br>
+        <strong style="color: white;">📅 Data:</strong> Lunedì 01 Dicembre 2025<br>
+        <strong style="color: white;">⏰ Ora:</strong> 20:30<br>
+        <strong style="color: white;">📍 Luogo:</strong> "Il Convivio di Hera"<br>
         Via Capocolonna, 103, Crotone 88900<br><br>
-        <strong>📱 RSVP:</strong><br>
+        <strong style="color: white;">📱 RSVP:</strong><br>
         📞 WhatsApp: +39 320 216 0011<br><br>
-        <em style="color: #FFA500;">È gradita conferma</em>
+        <em style="color: white;">È gradita conferma</em>
     </div>
     
     <div class="center">
@@ -535,10 +595,10 @@
     var audioCtx = null;
     
     var attacchi = [
-        {dmg:[20,35],msg:"📖 Studio! {d} danni!"},
-        {dmg:[25,40],msg:"📝 Panieri! {d} danni!"},
-        {dmg:[30,45],msg:"💻 Project! {d} danni!"},
-        {dmg:[35,55],msg:"🎯 30eLode! {d} danni!"}
+        {dmg:[20,35],msg:"📖 Studio! {d} danni!",acc:100},
+        {dmg:[25,40],msg:"📝 Panieri! {d} danni!",acc:95},
+        {dmg:[30,45],msg:"💻 Project! {d} danni!",acc:85},
+        {dmg:[35,55],msg:"🎯 30eLode! {d} danni!",acc:75}
     ];
     
     var bossAttacchi = [
@@ -717,17 +777,30 @@
         suono('attack');
         
         var sk = attacchi[tipo];
-        var d = Math.floor(Math.random()*(sk.dmg[1]-sk.dmg[0]+1)) + sk.dmg[0];
-        document.getElementById('msg').textContent = sk.msg.replace('{d}', d);
-        mostraDanno(d, 'boss', '#ff0000');
         
-        var bossSprite = document.querySelector('.boss-sprite');
-        if (bossSprite) {
-            bossSprite.classList.add('shake');
-            setTimeout(function() { bossSprite.classList.remove('shake'); }, 500);
+        // Calcola se l'attacco colpisce
+        var random = Math.random() * 100;
+        var colpisce = random < sk.acc;
+        
+        if (colpisce) {
+            // Attacco va a segno
+            var d = Math.floor(Math.random()*(sk.dmg[1]-sk.dmg[0]+1)) + sk.dmg[0];
+            document.getElementById('msg').textContent = sk.msg.replace('{d}', d);
+            mostraDanno(d, 'boss', '#ff0000');
+            
+            var bossSprite = document.querySelector('.boss-sprite');
+            if (bossSprite) {
+                bossSprite.classList.add('shake');
+                setTimeout(function() { bossSprite.classList.remove('shake'); }, 500);
+            }
+            
+            g.bossHP = Math.max(0, g.bossHP - d);
+        } else {
+            // Attacco mancato!
+            document.getElementById('msg').textContent = '❌ Attacco MANCATO! Il boss ha schivato!';
+            mostraDanno('MISS!', 'boss', '#FFD700');
         }
         
-        g.bossHP = Math.max(0, g.bossHP - d);
         aggiornaDisplay();
         
         setTimeout(function() {
