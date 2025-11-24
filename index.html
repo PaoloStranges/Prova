@@ -425,37 +425,37 @@
             </p>
             
             <strong style="color: gold;">🎯 OBIETTIVO:</strong><br>
-            Riduci gli HP dell'Università Pegaso da <strong>350 a 0</strong> prima che entrambi i tuoi personaggi vengano sconfitti!<br><br>
+            Riduci gli HP dell'Università Pegaso da <strong>300 a 0</strong> prima che entrambi i tuoi personaggi vengano sconfitti!<br><br>
             
             <strong style="color: gold;">👥 IL TUO PARTY:</strong><br>
-            • <strong>Tu</strong> - 150 HP<br>
-            • <strong>🧑🏻‍🦱 Paolo</strong> - 140 HP<br>
-            Totale party: <strong>290 HP</strong><br><br>
+            • <strong>Tu</strong> - 180 HP<br>
+            • <strong>🧑🏻‍🦱 Paolo</strong> - 160 HP<br>
+            Totale party: <strong>340 HP</strong><br><br>
             
             <strong style="color: gold;">⚔️ IL TUO TURNO:</strong><br>
             Scegli un'azione tra le 5 disponibili. Ogni attacco ha danni e precisione diversi:<br>
-            • <strong>📖 Studio</strong> - 20-35 danni | 100% precisione (non sbaglia MAI)<br>
-            • <strong>📝 Panieri</strong> - 25-40 danni | 95% precisione (quasi sempre a segno)<br>
-            • <strong>💻 Project</strong> - 30-45 danni | 85% precisione (può mancare)<br>
-            • <strong>🎯 Esame</strong> - 35-55 danni | 75% precisione (alto rischio!)<br>
-            • <strong>💚 Cura</strong> - +30 HP a TUTTI | 100% precisione (hai solo 4 pozioni)<br>
+            • <strong>📖 Studio</strong> - 25-40 danni | 100% precisione (non sbaglia MAI)<br>
+            • <strong>📝 Panieri</strong> - 30-45 danni | 95% precisione (quasi sempre a segno)<br>
+            • <strong>💻 Project</strong> - 35-50 danni | 90% precisione (buona affidabilità)<br>
+            • <strong>🎯 Esame</strong> - 40-60 danni | 80% precisione (forte e affidabile!)<br>
+            • <strong>💚 Cura</strong> - +30 HP a TUTTI | 100% precisione (hai 5 pozioni)<br>
             <em style="color: #FFD700;">Più l'attacco è forte, più rischi che manchi il bersaglio!</em><br><br>
             
             <strong style="color: gold;">🦄 TURNO DEL BOSS:</strong><br>
             Dopo ogni tua azione, il boss contrattacca automaticamente:<br>
-            • <strong>Attacco singolo</strong>: 20-45 danni a 1 personaggio CASUALE ancora vivo<br>
-            • <strong>Attacco ad area</strong>: 15-35 danni a TUTTO il party<br>
+            • <strong>Attacco singolo</strong>: 18-38 danni a 1 personaggio CASUALE ancora vivo<br>
+            • <strong>Attacco ad area</strong>: 12-27 danni a TUTTO il party<br>
             Il boss sceglie CASUALMENTE tra 5 attacchi diversi!<br><br>
             
             <strong style="color: gold;">💡 STRATEGIA:</strong><br>
             • <strong>Studio</strong> non sbaglia MAI - usa quando hai pochi HP o vuoi giocare sicuro<br>
             • <strong>Panieri</strong> ha 95% precisione - ottimo per giocate affidabili<br>
-            • <strong>Project</strong> è rischioso (85%) ma fa bei danni - buon compromesso<br>
-            • <strong>Esame</strong> fa TANTISSIMI danni (35-55) ma sbaglia 1 volta su 4!<br>
+            • <strong>Project</strong> è molto affidabile (90%) e fa bei danni<br>
+            • <strong>Esame</strong> fa TANTISSIMI danni (40-60) e ha buona precisione (80%)!<br>
             • Se l'attacco MANCA, il boss attacca lo stesso - turno sprecato!<br>
-            • Salva le cure per i momenti critici (sotto 50 HP)<br>
+            • Salva le cure per i momenti critici (sotto 60 HP)<br>
             • Se un personaggio muore, il boss colpirà solo il sopravvissuto<br>
-            • Servono circa 8-12 turni per vincere<br><br>
+            • Servono circa 6-9 turni per vincere<br><br>
             
             <strong style="color: gold;">💀 CONDIZIONI DI SCONFITTA:</strong><br>
             Game Over se <strong>ENTRAMBI</strong> i personaggi raggiungono 0 HP!<br>
@@ -493,7 +493,7 @@
                 <div class="member-hp">
                     <div class="hp-fill" id="p1hp"></div>
                 </div>
-                <div style="color: #ffff00;">HP <span id="p1text">150</span></div>
+                <div style="color: #ffff00;">HP <span id="p1text">180</span></div>
             </div>
             
             <div class="member">
@@ -504,7 +504,7 @@
                 <div class="member-hp">
                     <div class="hp-fill" id="p2hp"></div>
                 </div>
-                <div style="color: #ffff00;">HP <span id="p2text">140</span></div>
+                <div style="color: #ffff00;">HP <span id="p2text">160</span></div>
             </div>
         </div>
     </div>
@@ -514,7 +514,7 @@
         <button class="action-btn" onclick="attacca(1)">📝 Panieri<br><span style="font-size: 10px;">95% ✓</span></button>
         <button class="action-btn" onclick="attacca(2)">💻 Project<br><span style="font-size: 10px;">85% ⚠️</span></button>
         <button class="action-btn" onclick="attacca(3)">🎯 Esame<br><span style="font-size: 10px;">75% ⚠️</span></button>
-        <button class="action-btn" onclick="cura()">💚 Cura (<span id="pot">4</span>)</button>
+        <button class="action-btn" onclick="cura()">💚 Cura (<span id="pot">5</span>)</button>
     </div>
     
     <div class="message" id="msg">Scegli la tua azione!</div>
@@ -582,10 +582,10 @@
     
     var g = {
         nome: '',
-        giocatori: [{hp:150,max:150},{hp:140,max:140}],
-        bossHP: 350,
-        bossMax: 350,
-        pozioni: 4,
+        giocatori: [{hp:180,max:180},{hp:160,max:160}],
+        bossHP: 300,
+        bossMax: 300,
+        pozioni: 5,
         attivo: false
     };
     
@@ -595,10 +595,10 @@
     var audioCtx = null;
     
     var attacchi = [
-        {dmg:[20,35],msg:"📖 Studio! {d} danni!",acc:100},
-        {dmg:[25,40],msg:"📝 Panieri! {d} danni!",acc:95},
-        {dmg:[30,45],msg:"💻 Project! {d} danni!",acc:85},
-        {dmg:[35,55],msg:"🎯 30eLode! {d} danni!",acc:75}
+        {dmg:[25,40],msg:"📖 Studio! {d} danni!",acc:100},
+        {dmg:[30,45],msg:"📝 Panieri! {d} danni!",acc:95},
+        {dmg:[35,50],msg:"💻 Project! {d} danni!",acc:90},
+        {dmg:[40,60],msg:"🎯 30eLode! {d} danni!",acc:80}
     ];
     
     var bossAttacchi = [
@@ -745,18 +745,19 @@
         g.giocatori[1].hp = g.giocatori[1].max;
         g.bossHP = g.bossMax;
         g.attivo = true;
-        g.pozioni = 4;
+        g.pozioni = 5;
         document.getElementById('pot').textContent = g.pozioni;
         document.getElementById('msg').textContent = 'Scegli la tua azione!';
         var btns = document.querySelectorAll('.action-btn');
         for (var i = 0; i < btns.length; i++) btns[i].disabled = false;
         
-        // Ferma musica menu e avvia musica battaglia
-        if (musica && musicaAttiva) {
+        // Ferma musica menu
+        if (musica) {
             musica.pause();
         }
         
-        if (musicaBattaglia) {
+        // Avvia musica battaglia SOLO se la musica era attiva
+        if (musicaBattaglia && musicaAttiva) {
             musicaBattaglia.currentTime = 0;
             musicaBattaglia.play().then(function() {
                 console.log('✓ Musica battaglia avviata!');
@@ -847,7 +848,7 @@
         
         if (atk.multi) {
             // Attacco multiplo - colpisce tutti i personaggi VIVI
-            var d = Math.floor(Math.random() * 20) + 15;
+            var d = Math.floor(Math.random() * 15) + 12;
             for (var i = 0; i < g.giocatori.length; i++) {
                 if (g.giocatori[i].hp > 0) {
                     g.giocatori[i].hp = Math.max(0, g.giocatori[i].hp - d);
@@ -872,7 +873,7 @@
             
             if (vivi.length > 0) {
                 var target = vivi[Math.floor(Math.random() * vivi.length)];
-                var d = Math.floor(Math.random() * 25) + 20;
+                var d = Math.floor(Math.random() * 20) + 18;
                 g.giocatori[target].hp = Math.max(0, g.giocatori[target].hp - d);
                 mostraDanno(d, 'player' + target, '#ff6b6b');
                 if (members[target]) {
@@ -933,11 +934,13 @@
     function vinci() {
         g.attivo = false;
         
-        // Ferma musica battaglia e riavvia musica menu
+        // Ferma musica battaglia
         if (musicaBattaglia) {
             musicaBattaglia.pause();
             musicaBattaglia.currentTime = 0;
         }
+        
+        // Riavvia musica menu SOLO se era attiva prima
         if (musica && musicaAttiva) {
             musica.play().catch(function(e){});
         }
@@ -953,11 +956,13 @@
     function perdi() {
         g.attivo = false;
         
-        // Ferma musica battaglia e riavvia musica menu
+        // Ferma musica battaglia
         if (musicaBattaglia) {
             musicaBattaglia.pause();
             musicaBattaglia.currentTime = 0;
         }
+        
+        // Riavvia musica menu SOLO se era attiva prima
         if (musica && musicaAttiva) {
             musica.play().catch(function(e){});
         }
